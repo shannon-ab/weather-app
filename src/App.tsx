@@ -1,9 +1,12 @@
 import './App.css'
+import { Button } from "@/components/ui/button"
 
 function App() {
 
   return (
-      <div>hello world</div>
+      <div>
+        <Button variant={"destructive"}>Click me</Button>
+      </div>
   )
 }
 
