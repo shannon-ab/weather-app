@@ -1,5 +1,5 @@
 import { API_CONFIG } from "./config";
-import { Coordinates, WeatherData, ForecastData, GeocodingResponse } from "./types";
+import { Coordinates, WeatherData, ForecastData, GeocodingResponse, TemperatureUnit } from "./types";
 
 class WeatherApi {
   private createUrl(endpoint: string, params: Record<string, string | number>) {
@@ -20,21 +20,22 @@ class WeatherApi {
     return response.json();
   }
   
-  async getCurrentWeather({lat, lon}: Coordinates): Promise<WeatherData> {
+  async getCurrentWeather({lat, lon}: Coordinates, unit: TemperatureUnit = 'metric'): Promise<WeatherData> {
     const url = this.createUrl(`${API_CONFIG.BASE_URL}/weather`, {
       lat: lat.toString(), 
       lon: lon.toString(),
-      units: API_CONFIG.DEFAULT_PARAMS.units
+      units: unit
     });
 
     return this.fetchData<WeatherData>(url);
   }
 
-  async getForecast({lat, lon}: Coordinates): Promise<ForecastData> {
+  async getForecast({lat, lon}: Coordinates, unit: TemperatureUnit = 'metric'): Promise<ForecastData> {
     const url = this.createUrl(`${API_CONFIG.BASE_URL}/forecast`, {
       lat: lat.toString(), 
       lon: lon.toString(),
-      units: API_CONFIG.DEFAULT_PARAMS.units
+      units: unit,
+      cnt: 40  // 5 days * 8 measurements per day
     });
 
     return this.fetchData<ForecastData>(url);

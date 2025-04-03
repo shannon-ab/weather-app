@@ -7,21 +7,28 @@ interface Location {
   country: string;
 }
 
+type TemperatureUnit = 'metric' | 'imperial';
+
 interface WeatherContextType {
   selectedLocation: Location | null;
   setSelectedLocation: (location: Location | null) => void;
+  temperatureUnit: TemperatureUnit;
+  setTemperatureUnit: (unit: TemperatureUnit) => void;
 }
 
 const WeatherContext = createContext<WeatherContextType | undefined>(undefined);
 
 export function WeatherProvider({ children }: { children: React.ReactNode }) {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  const [temperatureUnit, setTemperatureUnit] = useState<TemperatureUnit>('metric');
 
   return (
     <WeatherContext.Provider 
       value={{ 
         selectedLocation, 
-        setSelectedLocation 
+        setSelectedLocation,
+        temperatureUnit,
+        setTemperatureUnit
       }}
     >
       {children}

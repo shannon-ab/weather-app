@@ -1,34 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useWeather } from "@/context/weather-context"
-import { useEffect, useState } from "react"
-import { weatherApi } from "@/api/weather"
 import { WeatherData } from "@/api/types"
 
-export function CurrentWeather() {
-  const { selectedLocation } = useWeather()
-  const [weather, setWeather] = useState<WeatherData | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+interface CurrentWeatherProps {
+  weather: WeatherData | null | undefined;
+  isLoading: boolean;
+}
 
-  useEffect(() => {
-    const fetchWeather = async () => {
-      if (!selectedLocation) return
-
-      setLoading(true)
-      setError(null)
-      try {
-        const data = await weatherApi.getCurrentWeather(selectedLocation)
-        setWeather(data)
-      } catch (err) {
-        setError('Failed to fetch weather data')
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchWeather()
-  }, [selectedLocation])
+export function CurrentWeather({ weather, isLoading }: CurrentWeatherProps) {
+  const { selectedLocation, temperatureUnit } = useWeather()
 
   if (!selectedLocation) {
     return (
@@ -43,7 +23,7 @@ export function CurrentWeather() {
     )
   }
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Card>
         <CardHeader>
@@ -56,22 +36,11 @@ export function CurrentWeather() {
     )
   }
 
-  if (error) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Current Weather</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-destructive">{error}</p>
-        </CardContent>
-      </Card>
-    )
-  }
-
   if (!weather) {
     return null
   }
+
+  const unit = temperatureUnit === 'metric' ? '°C' : '°F'
 
   return (
     <Card>
@@ -87,12 +56,12 @@ export function CurrentWeather() {
               className="w-24 h-24"
             />
             <div>
-              <p className="text-4xl font-bold">{Math.round(weather.main.temp)}°C</p>
+              <p className="text-4xl font-bold">{Math.round(weather.main.temp)}{unit}</p>
               <p className="text-muted-foreground capitalize">{weather.weather[0].description}</p>
             </div>
           </div>
           <div className="text-right">
-            <p className="text-sm text-muted-foreground">Feels like: {Math.round(weather.main.feels_like)}°C</p>
+            <p className="text-sm text-muted-foreground">Feels like: {Math.round(weather.main.feels_like)}{unit}</p>
             <p className="text-sm text-muted-foreground">Humidity: {weather.main.humidity}%</p>
           </div>
         </div>

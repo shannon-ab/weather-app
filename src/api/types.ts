@@ -3,6 +3,8 @@ export interface Coordinates {
   lon: number;
 }
 
+export type TemperatureUnit = 'metric' | 'imperial';
+
 export interface WeatherCondition {
   id: number;
   main: string;
