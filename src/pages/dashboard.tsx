@@ -1,8 +1,11 @@
 import React from 'react'
+import { CurrentWeather } from '@/components/ui/current-weather'
 
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <div className="w-full space-y-4">
+      <CurrentWeather />
+    </div>
   )
 }
 
