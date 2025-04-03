@@ -1,16 +1,21 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useWeather } from "@/context/weather-context"
-import { WeatherData } from "@/api/types"
+import { useFavorites } from "@/context/favorites-context"
+import { WeatherData, GeocodingResponse } from "@/api/types"
+import { Star } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 interface CurrentWeatherProps {
   weather: WeatherData | null | undefined;
   isLoading: boolean;
+  location?: GeocodingResponse;
 }
 
-export function CurrentWeather({ weather, isLoading }: CurrentWeatherProps) {
-  const { selectedLocation, temperatureUnit } = useWeather()
+export function CurrentWeather({ weather, isLoading, location }: CurrentWeatherProps) {
+  const { temperatureUnit } = useWeather()
+  const { addFavorite, removeFavorite, isFavorite } = useFavorites()
 
-  if (!selectedLocation) {
+  if (!location) {
     return (
       <Card>
         <CardHeader>
@@ -44,8 +49,16 @@ export function CurrentWeather({ weather, isLoading }: CurrentWeatherProps) {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{selectedLocation.name}, {selectedLocation.country}</CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>{location.name}, {location.country}</CardTitle>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => isFavorite(location) ? removeFavorite(location) : addFavorite(location)}
+          className={isFavorite(location) ? "text-yellow-500" : "text-muted-foreground"}
+        >
+          <Star className="h-5 w-5" fill={isFavorite(location) ? "currentColor" : "none"} />
+        </Button>
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between">
