@@ -29,8 +29,8 @@ export function HourlyTemp({ forecast }: HourlyTempProps) {
 
   const unit = temperatureUnit === 'metric' ? '°C' : '°F'
 
-  // Get next 24 hours of forecast
-  const hourlyForecast = forecast.list.slice(0, 24)
+  // Get first 8 entries (24 hours)
+  const hourlyForecast = forecast.list.slice(0, 8)
 
   return (
     <Card>

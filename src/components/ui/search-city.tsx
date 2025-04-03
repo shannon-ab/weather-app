@@ -28,7 +28,7 @@ const SearchCity = () => {
     <>
       <Button 
         variant="outline" 
-        className="w-full justify-start text-muted-foreground"
+        className="w-[500px] justify-start text-muted-foreground"
         onClick={() => setOpen(true)}
       >
         <Search className="mr-2 h-4 w-4" />

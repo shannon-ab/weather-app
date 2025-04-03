@@ -53,14 +53,18 @@ function FavoriteItem({ city }: { city: GeocodingResponse }) {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setSelectedLocation(city)}
+          onClick={() => {
+            setSelectedLocation(city);
+          }}
         >
           View
         </Button>
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => removeFavorite(city)}
+          onClick={() => {
+            removeFavorite(city);
+          }}
         >
           Remove
         </Button>

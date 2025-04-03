@@ -41,10 +41,6 @@ export function DailyForecast({ forecast }: DailyForecastProps) {
   // Get the next 5 days
   const next5Days = Object.entries(dailyForecasts).slice(0, 5)
 
-  console.log('Total forecast entries:', forecast.list.length)
-  console.log('Unique dates:', Object.keys(dailyForecasts))
-  console.log('Next 5 days:', next5Days.map(([date]) => date))
-
   return (
     <Card>
       <CardHeader>

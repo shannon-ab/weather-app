@@ -3,7 +3,6 @@ import { ThemeProvider } from './components/theme-provider'
 import Layout from './components/layout'
 import { Dashboard } from './pages/dashboard'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { WeatherProvider } from '@/context/weather-context'
 import { FavoritesProvider } from '@/context/favorites-context'
 
@@ -21,7 +20,6 @@ function App() {
           </FavoritesProvider>
         </WeatherProvider>
       </ThemeProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )
 }
