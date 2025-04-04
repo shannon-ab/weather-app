@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { weatherApi } from "@/api/weather";
-import type { Coordinates, GeocodingResponse } from "@/api/types";
-import { useWeather } from "@/context/weather-context";
+import type { Coordinates } from "@/api/types";
 
 export const WEATHER_KEYS = {
   weather: (coords: Coordinates) => ["weather", coords] as const,
@@ -10,42 +9,27 @@ export const WEATHER_KEYS = {
   search: (query: string) => ["location-search", query] as const,
 } as const;
 
-export function useWeatherQuery(location: GeocodingResponse | null) {
-  const { temperatureUnit } = useWeather();
-  
-  console.log('Weather Query - Current Unit:', temperatureUnit);
-  
+export function useWeatherQuery(coordinates: Coordinates | null) {
   return useQuery({
-    queryKey: ['weather', location, temperatureUnit],
-    queryFn: () => location ? weatherApi.getCurrentWeather(location, temperatureUnit) : null,
-    enabled: !!location
+    queryKey: WEATHER_KEYS.weather(coordinates ?? { lat: 0, lon: 0 }),
+    queryFn: () =>
+      coordinates ? weatherApi.getCurrentWeather(coordinates) : null,
+    enabled: !!coordinates,
   });
 }
 
-export function useForecastQuery(location: GeocodingResponse | null) {
-  const { temperatureUnit } = useWeather();
-  
-  console.log('Forecast Query - Current Unit:', temperatureUnit);
-  
+export function useForecastQuery(coordinates: Coordinates | null) {
   return useQuery({
-    queryKey: ['forecast', location, temperatureUnit],
-    queryFn: () => location ? weatherApi.getForecast(location, temperatureUnit) : null,
-    enabled: !!location
-  });
-}
-
-export function useReverseGeocodeQuery(location: GeocodingResponse | null) {
-  return useQuery({
-    queryKey: ['geocode', location],
-    queryFn: () => location ? weatherApi.geoCode(location) : null,
-    enabled: !!location
+    queryKey: WEATHER_KEYS.forecast(coordinates ?? { lat: 0, lon: 0 }),
+    queryFn: () => (coordinates ? weatherApi.getForecast(coordinates) : null),
+    enabled: !!coordinates,
   });
 }
 
 export function useLocationSearch(query: string) {
   return useQuery({
-    queryKey: ['locationSearch', query],
+    queryKey: WEATHER_KEYS.search(query),
     queryFn: () => weatherApi.searchLocations(query),
-    enabled: query.length > 0
+    enabled: query.length >= 3,
   });
 }

@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useWeather } from "@/context/weather-context"
-import { useFavorites } from "@/context/favorites-context"
+import { useFavorites } from "@/hooks/use-favorite"
 import { WeatherData, GeocodingResponse } from "@/api/types"
 import { Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -46,6 +46,22 @@ export function CurrentWeather({ weather, isLoading, location }: CurrentWeatherP
   }
 
   const unit = temperatureUnit === 'metric' ? '°C' : '°F'
+  const cityId = `${location.lat}-${location.lon}`
+  const isCurrentCityFavorite = isFavorite(location.lat, location.lon)
+
+  const handleFavoriteClick = () => {
+    if (isCurrentCityFavorite) {
+      removeFavorite.mutate(cityId)
+    } else {
+      addFavorite.mutate({
+        name: location.name,
+        lat: location.lat,
+        lon: location.lon,
+        country: location.country,
+        state: location.state
+      })
+    }
+  }
 
   return (
     <Card>
@@ -54,10 +70,10 @@ export function CurrentWeather({ weather, isLoading, location }: CurrentWeatherP
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => isFavorite(location) ? removeFavorite(location) : addFavorite(location)}
-          className={isFavorite(location) ? "text-yellow-500" : "text-muted-foreground"}
+          onClick={handleFavoriteClick}
+          className={isCurrentCityFavorite ? "text-yellow-500" : "text-muted-foreground"}
         >
-          <Star className="h-5 w-5" fill={isFavorite(location) ? "currentColor" : "none"} />
+          <Star className="h-5 w-5" fill={isCurrentCityFavorite ? "currentColor" : "none"} />
         </Button>
       </CardHeader>
       <CardContent>

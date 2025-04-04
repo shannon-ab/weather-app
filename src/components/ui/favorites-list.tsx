@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useFavorites } from "@/context/favorites-context"
+import { useFavorites } from "@/hooks/use-favorite"
 import { useWeather } from "@/context/weather-context"
-import { Star } from "lucide-react"
+import { Star, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DndContext,
@@ -10,6 +10,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
+  DragEndEvent
 } from '@dnd-kit/core'
 import {
   arrayMove,
@@ -19,62 +20,66 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { GeocodingResponse } from '@/api/types'
+import { FavoriteCity } from '@/api/types'
+import { useWeatherQuery } from "@/hooks/use-weather"
 
-function FavoriteItem({ city }: { city: GeocodingResponse }) {
-  const { removeFavorite, isFavorite } = useFavorites()
-  const { setSelectedLocation } = useWeather()
+function FavoriteItem({ city }: { city: FavoriteCity }) {
+  const { removeFavorite } = useFavorites()
+  const { temperatureUnit } = useWeather()
+  const { data: weather } = useWeatherQuery(city)
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition,
-  } = useSortable({ id: `${city.lat}-${city.lon}` })
+  } = useSortable({ id: city.id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   }
 
+  const unit = temperatureUnit === 'metric' ? '°C' : '°F'
+
   return (
     <div
       ref={setNodeRef}
       style={style}
-      className="flex items-center justify-between p-4 bg-card rounded-lg border cursor-move"
       {...attributes}
       {...listeners}
+      className="flex items-center justify-between p-4 bg-card rounded-lg border group cursor-move"
     >
-      <div className="flex items-center gap-2">
-        <Star className="h-4 w-4 text-yellow-500 fill-current" />
-        <span className="font-medium">{city.name}, {city.country}</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => {
-            setSelectedLocation(city);
-          }}
-        >
-          View
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => {
-            removeFavorite(city);
-          }}
-        >
-          Remove
-        </Button>
+      <div className="flex items-center justify-between gap-4 flex-1">
+        <div className="flex items-center gap-2 min-w-40">
+          <Star className="h-4 w-4 text-yellow-500 fill-current" />
+          <span className="font-medium">{city.name}, {city.country}</span>
+          {city.state && <span className="text-muted-foreground">({city.state})</span>}
+        </div>
+        
+        {weather && (
+          <div className="flex items-center justify-end gap-6 flex-1">
+            <div className="flex items-center">
+              <img
+                src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
+                alt={weather.weather[0].description}
+                className="w-8 h-8"
+              />
+              <span className="font-medium">{Math.round(weather.main.temp)}{unit}</span>
+            </div>
+            <div className="flex gap-2 text-sm text-muted-foreground min-w-32 justify-end">
+              <span>H: {Math.round(weather.main.temp_max)}{unit}</span>
+              <span>L: {Math.round(weather.main.temp_min)}{unit}</span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
 }
 
 export function FavoritesList() {
-  const { favorites, setFavorites } = useFavorites()
+  const { favorites, reorderFavorites } = useFavorites()
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -83,21 +88,23 @@ export function FavoritesList() {
     })
   )
 
-  function handleDragEnd(event: any) {
+  function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
 
-    if (active.id !== over.id) {
+    if (over && active.id !== over.id) {
       const oldIndex = favorites.findIndex(
-        (item) => `${item.lat}-${item.lon}` === active.id
+        (item: FavoriteCity) => item.id === active.id
       )
       const newIndex = favorites.findIndex(
-        (item) => `${item.lat}-${item.lon}` === over.id
+        (item: FavoriteCity) => item.id === over.id
       )
-      setFavorites(arrayMove(favorites, oldIndex, newIndex))
+      
+      const newFavorites = arrayMove(favorites, oldIndex, newIndex)
+      reorderFavorites.mutate(newFavorites)
     }
   }
 
-  if (favorites.length === 0) {
+  if (!favorites || favorites.length === 0) {
     return (
       <Card>
         <CardHeader>
@@ -122,12 +129,12 @@ export function FavoritesList() {
           onDragEnd={handleDragEnd}
         >
           <SortableContext
-            items={favorites.map(city => `${city.lat}-${city.lon}`)}
+            items={favorites.map((city: FavoriteCity) => city.id)}
             strategy={verticalListSortingStrategy}
           >
             <div className="space-y-2">
-              {favorites.map((city) => (
-                <FavoriteItem key={`${city.lat}-${city.lon}`} city={city} />
+              {favorites.map((city: FavoriteCity) => (
+                <FavoriteItem key={city.id} city={city} />
               ))}
             </div>
           </SortableContext>

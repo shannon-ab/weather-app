@@ -60,3 +60,12 @@ export interface GeocodingResponse {
   country: string;
   state?: string;
 }
+
+export interface FavoriteCity {
+  id: string;
+  name: string;
+  lat: number;
+  lon: number;
+  country: string;
+  state?: string;
+}
