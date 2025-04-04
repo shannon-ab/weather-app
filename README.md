@@ -51,7 +51,7 @@ Before running the application, make sure you have:
   - Drag and drop to reorder favorites
   - Quick view of weather for all favorite cities
 - **Temperature Units**: Toggle between Celsius and Fahrenheit
-- **Responsive Design**: Works on desktop and mobile devices
+- **Responsive Design**: Switching between dark and light mode
 
 ## Technologies Used
 
