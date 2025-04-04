@@ -46,7 +46,7 @@ Before running the application, make sure you have:
 
 - **City Search**: Search for any city worldwide
 - **Current Weather**: View current temperature, conditions, and weather icon
-- **5-day forecast and 24 hour forecast **: View 5-day forecast and 24-hour forecast
+- **5-day forecast and 24 hour forecast**: View 5-day forecast and 24-hour forecast
 - **Favorites**:
   - Save cities to your favorites list by clicking the star icon next to the city name
   - Remove from favorites by clicking the same star icon
