@@ -42,18 +42,29 @@ Before running the application, make sure you have:
    http://localhost:5173
    ```
 
-## Features
+## Core Functionality
 
 - **City Search**: Search for any city worldwide
 - **Current Weather**: View current temperature, conditions, and weather icon
-- **5-day forecast and 24 hour forecast**: View 5-day forecast and 24-hour forecast
+- **OpenWeatherMap API**: Fetch weather data from external API
+
+
+## Additional Features
+
+- **Temperature Units**: Toggle between Celsius and Fahrenheit
 - **Favorites**:
+  - Quick view of weather for all favorite cities
   - Save cities to your favorites list by clicking the star icon next to the city name
   - Remove from favorites by clicking the same star icon
-  - Drag and drop to reorder favorites
-  - Quick view of weather for all favorite cities
-- **Temperature Units**: Toggle between Celsius and Fahrenheit
+- **Implement error handling**:
+
+
+## Bonus Features
+
+- **5-day forecast and 24 hour forecast**: View 5-day forecast and 24-hour forecast
+- **Favorites**: Drag and drop to reorder favorites
 - **Responsive Design**: Switching between dark and light mode
+
 
 ## Technologies Used
 
