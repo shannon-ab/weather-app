@@ -57,6 +57,10 @@ Before running the application, make sure you have:
   - Save cities to your favorites list by clicking the star icon next to the city name
   - Remove from favorites by clicking the same star icon
 - **Implement error handling**:
+  - Skeleton loading states for better user experience
+  - Informative messages for failed API requests
+  - Feedback when a city is not found during search
+  - Fallback UI for empty states and errors
 
 
 ## Bonus Features
