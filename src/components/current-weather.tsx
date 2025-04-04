@@ -7,11 +7,10 @@ import { Button } from "@/components/ui/button"
 
 interface CurrentWeatherProps {
   weather: WeatherData | null | undefined;
-  isLoading: boolean;
   location?: GeocodingResponse;
 }
 
-export function CurrentWeather({ weather, isLoading, location }: CurrentWeatherProps) {
+export function CurrentWeather({ weather, location }: CurrentWeatherProps) {
   const { temperatureUnit } = useWeatherContext()
   const { addFavorite, removeFavorite, isFavorite } = useFavorites()
 
@@ -23,19 +22,6 @@ export function CurrentWeather({ weather, isLoading, location }: CurrentWeatherP
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">Search for a city to see the weather</p>
-        </CardContent>
-      </Card>
-    )
-  }
-
-  if (isLoading) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Current Weather</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">Loading weather data...</p>
         </CardContent>
       </Card>
     )
