@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useWeather } from "@/context/weather-context"
+import { useWeatherContext } from "@/context/weather-context"
 import { useFavorites } from "@/hooks/use-favorite"
 import { WeatherData, GeocodingResponse } from "@/api/types"
 import { Star } from "lucide-react"
@@ -12,7 +12,7 @@ interface CurrentWeatherProps {
 }
 
 export function CurrentWeather({ weather, isLoading, location }: CurrentWeatherProps) {
-  const { temperatureUnit } = useWeather()
+  const { temperatureUnit } = useWeatherContext()
   const { addFavorite, removeFavorite, isFavorite } = useFavorites()
 
   if (!location) {

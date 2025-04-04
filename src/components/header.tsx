@@ -1,8 +1,8 @@
 import { useTheme } from '@/context/theme-provider'
 import { Moon, Sun } from 'lucide-react';
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import SearchCity from './search-city';
-import { useWeather } from '@/context/weather-context';
+import { useWeatherContext } from '@/context/weather-context';
 import { Check, ChevronsUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -20,7 +20,7 @@ const units = [
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
-  const { temperatureUnit, setTemperatureUnit } = useWeather();
+  const { temperatureUnit, setTemperatureUnit } = useWeatherContext();
   const [open, setOpen] = useState(false);
   const isDark = theme === 'dark';
   const dropdownRef = useRef<HTMLDivElement>(null);

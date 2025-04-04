@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useFavorites } from "@/hooks/use-favorite"
-import { useWeather } from "@/context/weather-context"
+import { useWeatherContext } from "@/context/weather-context"
 import { Star, X } from "lucide-react"
 import {
   DndContext,
@@ -23,7 +23,7 @@ import { FavoriteCity } from '@/api/types'
 import { useWeatherQuery } from "@/hooks/use-weather"
 
 function FavoriteItem({ city }: { city: FavoriteCity }) {
-  const { temperatureUnit } = useWeather()
+  const { temperatureUnit } = useWeatherContext()
   const { data: weather } = useWeatherQuery(city)
   const {
     attributes,

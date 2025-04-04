@@ -1,12 +1,12 @@
-import { useWeather } from "@/context/weather-context"
+import { useWeatherContext } from "@/context/weather-context"
 import { CurrentWeather } from "@/components/current-weather"
-import { HourlyTemp } from "@/components/ui/hourly-temp"
+import { HourlyTemp } from "@/components/hourly-temp"
 import { DailyForecast } from "@/components/daily-forecast"
 import { FavoritesList } from "@/components/favorites-list"
 import { useWeatherQuery, useForecastQuery } from "@/hooks/use-weather"
 
 export function Dashboard() {
-  const { selectedLocation, setSelectedLocation } = useWeather()
+  const { selectedLocation, setSelectedLocation } = useWeatherContext()
   const { data: weather, isLoading: isWeatherLoading } = useWeatherQuery(selectedLocation)
   const { data: forecast, isLoading: isForecastLoading } = useForecastQuery(selectedLocation)
 

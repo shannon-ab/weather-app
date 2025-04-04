@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { useWeather } from "@/context/weather-context"
+import { useWeatherContext } from "@/context/weather-context"
 import { ForecastData } from "@/api/types"
 
 interface HourlyTempProps {
@@ -8,7 +8,7 @@ interface HourlyTempProps {
 }
 
 export function HourlyTemp({ forecast }: HourlyTempProps) {
-  const { selectedLocation, temperatureUnit } = useWeather()
+  const { selectedLocation, temperatureUnit } = useWeatherContext()
 
   if (!selectedLocation) {
     return (

@@ -5,12 +5,12 @@ import React from 'react'
 import { weatherApi } from '@/api/weather'
 import { GeocodingResponse } from '@/api/types'
 import { useLocationSearch } from "@/hooks/use-weather"
-import { useWeather } from '@/context/weather-context'
+import { useWeatherContext } from '@/context/weather-context'
 
 const SearchCity = () => {
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState('')
-  const { setSelectedLocation } = useWeather()
+  const { setSelectedLocation } = useWeatherContext()
   const { data: locations, isLoading } = useLocationSearch(query);
 
   const handleSelect = (cityData: string) => {

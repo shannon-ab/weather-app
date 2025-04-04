@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useWeather } from "@/context/weather-context"
+import { useWeatherContext } from "@/context/weather-context"
 import { ForecastData } from "@/api/types"
 
 interface DailyForecastProps {
@@ -7,7 +7,7 @@ interface DailyForecastProps {
 }
 
 export function DailyForecast({ forecast }: DailyForecastProps) {
-  const { selectedLocation, temperatureUnit } = useWeather()
+  const { selectedLocation, temperatureUnit } = useWeatherContext()
 
   if (!selectedLocation) {
     return (
