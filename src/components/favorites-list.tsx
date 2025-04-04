@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useFavorites } from "@/hooks/use-favorite"
 import { useWeather } from "@/context/weather-context"
 import { Star, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import {
   DndContext,
   closestCenter,
@@ -24,7 +23,6 @@ import { FavoriteCity } from '@/api/types'
 import { useWeatherQuery } from "@/hooks/use-weather"
 
 function FavoriteItem({ city }: { city: FavoriteCity }) {
-  const { removeFavorite } = useFavorites()
   const { temperatureUnit } = useWeather()
   const { data: weather } = useWeatherQuery(city)
   const {

@@ -1,15 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-
-export interface FavoriteCity {
-  id: string;
-  name: string;
-  lat: number;
-  lon: number;
-  country: string;
-  state?: string;
-  addedAt: number;
-}
+import { FavoriteCity } from "@/api/types";
 
 export function useFavorites() {
   const [favorites, setFavorites] = useLocalStorage<FavoriteCity[]>(
@@ -22,7 +13,7 @@ export function useFavorites() {
     queryKey: ["favorites"],
     queryFn: () => favorites,
     initialData: favorites,
-    staleTime: Infinity, // Since we're managing the data in localStorage
+    staleTime: Infinity, 
   });
 
   const addFavorite = useMutation({
@@ -30,7 +21,6 @@ export function useFavorites() {
       const newFavorite: FavoriteCity = {
         ...city,
         id: `${city.lat}-${city.lon}`,
-        addedAt: Date.now(),
       };
 
       // Prevent duplicates

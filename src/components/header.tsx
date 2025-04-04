@@ -1,7 +1,7 @@
-import { useTheme } from '@/components/theme-provider'
+import { useTheme } from '@/context/theme-provider'
 import { Moon, Sun } from 'lucide-react';
 import React, { useEffect, useRef } from 'react'
-import SearchCity from './ui/search-city';
+import SearchCity from './search-city';
 import { useWeather } from '@/context/weather-context';
 import { Check, ChevronsUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"

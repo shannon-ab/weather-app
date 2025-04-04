@@ -1,10 +1,8 @@
-import { useState } from "react"
 import { useWeather } from "@/context/weather-context"
-import { CurrentWeather } from "@/components/ui/current-weather"
+import { CurrentWeather } from "@/components/current-weather"
 import { HourlyTemp } from "@/components/ui/hourly-temp"
-import { DailyForecast } from "@/components/ui/daily-forecast"
-import { FavoritesList } from "@/components/ui/favorites-list"
-import { GeocodingResponse } from "@/api/types"
+import { DailyForecast } from "@/components/daily-forecast"
+import { FavoritesList } from "@/components/favorites-list"
 import { useWeatherQuery, useForecastQuery } from "@/hooks/use-weather"
 
 export function Dashboard() {
