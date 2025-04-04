@@ -1,5 +1,6 @@
-import React, { PropsWithChildren } from 'react'
+import { PropsWithChildren } from 'react'
 import Header from './header'
+
 const layout = ({children}: PropsWithChildren) => {
   return (
     <div className='bg-gradient-to-br from-background to-muted'>

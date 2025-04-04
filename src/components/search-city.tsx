@@ -1,17 +1,21 @@
-import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
 import React from 'react'
-import { weatherApi } from '@/api/weather'
-import { GeocodingResponse } from '@/api/types'
 import { useLocationSearch } from "@/hooks/use-weather"
 import { useWeatherContext } from '@/context/weather-context'
+import { AlertCircle } from "lucide-react"
+ 
+import {
+  Alert,
+  AlertDescription,
+} from "@/components/ui/alert"
 
 const SearchCity = () => {
-  const [open, setOpen] = React.useState(false)
-  const [query, setQuery] = React.useState('')
-  const { setSelectedLocation } = useWeatherContext()
-  const { data: locations, isLoading } = useLocationSearch(query);
+  const [open, setOpen] = React.useState(false);
+  const [query, setQuery] = React.useState('');
+  const { setSelectedLocation } = useWeatherContext();
+  const { data: locations, isLoading, error } = useLocationSearch(query);
 
   const handleSelect = (cityData: string) => {
     const [lat, lon, name, country] = cityData.split("|");
@@ -43,9 +47,21 @@ const SearchCity = () => {
           className="h-11"
         />
         <CommandList>
-          {query.length > 2 && !isLoading && locations?.length === 0 && (
-            <CommandEmpty>No cities found.</CommandEmpty>
-          )}
+        {query.length > 2 && (
+          <>
+            {error && <CommandEmpty>
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  Error searching for cities
+                </AlertDescription>
+              </Alert>
+              </CommandEmpty>}
+            {!isLoading && locations?.length === 0 && (
+              <CommandEmpty>No cities found.</CommandEmpty>
+            )}
+          </>
+        )}
           {locations && locations.length > 0 && (
             <CommandGroup heading="Suggestions" className="px-2">
               {locations.map((location) => (

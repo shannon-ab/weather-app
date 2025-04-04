@@ -5,14 +5,16 @@ import { DailyForecast } from "@/components/daily-forecast"
 import { FavoritesList } from "@/components/favorites-list"
 import { useWeatherQuery, useForecastQuery } from "@/hooks/use-weather"
 import { SkeletonWeatherCard, SkeletonHourlyCard, SkeletonDailyForecast } from "@/components/skeletons"
+import { ErrorCard } from "@/components/error-card"
 
 export function Dashboard() {
-  const { selectedLocation } = useWeatherContext()
-  const { data: weather, isLoading: isWeatherLoading } = useWeatherQuery(selectedLocation)
-  const { data: forecast, isLoading: isForecastLoading } = useForecastQuery(selectedLocation)
+  const { selectedLocation } = useWeatherContext();
+  const { data: weather, isLoading: isWeatherLoading, error: weatherError } = useWeatherQuery(selectedLocation);
+  const { data: forecast, isLoading: isForecastLoading, error: forecastError } = useForecastQuery(selectedLocation);
+  
 
   // Centralized loading state
-  const isLoading = isWeatherLoading || isForecastLoading
+  const isLoading = isWeatherLoading || isForecastLoading;
 
   // Show skeleton UI when loading with a selected location
   if (isLoading && selectedLocation) {
@@ -28,6 +30,17 @@ export function Dashboard() {
     )
   }
 
+  if (weatherError || forecastError) {
+    return (
+      <div className="container mx-auto p-4 space-y-4">
+        <div className="grid gap-4 md:grid-cols-2">
+          {weatherError && <ErrorCard error={weatherError} />}
+          {forecastError && <ErrorCard error={forecastError} />}
+        </div>
+        <FavoritesList />
+      </div>
+    )
+  }
   return (
     <div className="container mx-auto p-4 space-y-4">
       <div className="grid gap-4 md:grid-cols-2">

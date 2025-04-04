@@ -8,7 +8,7 @@ interface HourlyTempProps {
 }
 
 export function HourlyTemp({ forecast }: HourlyTempProps) {
-  const { selectedLocation, temperatureUnit } = useWeatherContext()
+  const { selectedLocation, temperatureUnit } = useWeatherContext();
 
   if (!selectedLocation) {
     return (
@@ -27,10 +27,10 @@ export function HourlyTemp({ forecast }: HourlyTempProps) {
     return null
   }
 
-  const unit = temperatureUnit === 'metric' ? '°C' : '°F'
+  const unit = temperatureUnit === 'metric' ? '°C' : '°F';
 
   // Get first 8 entries (24 hours)
-  const hourlyForecast = forecast.list.slice(0, 8)
+  const hourlyForecast = forecast.list.slice(0, 8);
 
   return (
     <Card>

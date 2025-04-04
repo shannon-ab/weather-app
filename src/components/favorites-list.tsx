@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useFavorites } from "@/hooks/use-favorite"
-import { useWeatherContext } from "@/context/weather-context"
-import { Star, X } from "lucide-react"
+import { Star } from "lucide-react"
 import {
   DndContext,
   closestCenter,
@@ -20,11 +19,8 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { FavoriteCity } from '@/api/types'
-import { useWeatherQuery } from "@/hooks/use-weather"
 
 function FavoriteItem({ city }: { city: FavoriteCity }) {
-  const { temperatureUnit } = useWeatherContext()
-  const { data: weather } = useWeatherQuery(city)
   const {
     attributes,
     listeners,
@@ -38,39 +34,18 @@ function FavoriteItem({ city }: { city: FavoriteCity }) {
     transition,
   }
 
-  const unit = temperatureUnit === 'metric' ? '°C' : '°F'
-
   return (
     <div
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
-      className="flex items-center justify-between p-4 bg-card rounded-lg border group cursor-move"
+      className="flex items-center p-4 bg-card rounded-lg border cursor-move"
     >
-      <div className="flex items-center justify-between gap-4 flex-1">
-        <div className="flex items-center gap-2 min-w-40">
-          <Star className="h-4 w-4 text-yellow-500 fill-current" />
-          <span className="font-medium">{city.name}, {city.country}</span>
-          {city.state && <span className="text-muted-foreground">({city.state})</span>}
-        </div>
-        
-        {weather && (
-          <div className="flex items-center justify-end gap-6 flex-1">
-            <div className="flex items-center">
-              <img
-                src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
-                alt={weather.weather[0].description}
-                className="w-8 h-8"
-              />
-              <span className="font-medium">{Math.round(weather.main.temp)}{unit}</span>
-            </div>
-            <div className="flex gap-2 text-sm text-muted-foreground min-w-32 justify-end">
-              <span>H: {Math.round(weather.main.temp_max)}{unit}</span>
-              <span>L: {Math.round(weather.main.temp_min)}{unit}</span>
-            </div>
-          </div>
-        )}
+      <div className="flex items-center gap-2">
+        <Star className="h-4 w-4 text-yellow-500 fill-current" />
+        <span className="font-medium">{city.name}, {city.country}</span>
+        {city.state && <span className="text-muted-foreground">({city.state})</span>}
       </div>
     </div>
   )
